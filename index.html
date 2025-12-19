@@ -164,7 +164,7 @@
 <body>
 
 <div class="container">
-    <h2>週三 對講機測試表單</h2>
+    <h2>對講機測試表單</h2>
 
     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
@@ -364,14 +364,28 @@
     }
 	window.onload = () => {
     // 1. 先把日期預設為今天
-    document.getElementById('dateInput').valueAsDate = new Date();
+    const dateInput = document.getElementById('dateInput');
+    if (dateInput) {
+        dateInput.valueAsDate = new Date();
+    }
     
-    // 2. 立刻執行同步邏輯，把已填過的車組藏起來
-    syncVehicleStatus();
+    // 定義一個要重複執行的動作
+    const refreshData = () => {
+        console.log("系統自動同步中...");
+        syncVehicleStatus(); // 呼叫你原本寫好的抓資料函式
+    };
+
+    // 2. 立刻執行第一次同步
+    refreshData();
+
+    // 3. 設定定時器：每 10000 毫秒 (10 秒) 自動執行一次
+    // 使用者不用重新整理網頁，也會看到車組消失
+    setInterval(refreshData, 10000); 
 };
 </script>
 
 </body>
 
 </html>
+
 
