@@ -363,30 +363,30 @@
         }
     }
 	window.onload = () => {
-    // 1. 先把日期預設為今天
     const dateInput = document.getElementById('dateInput');
     if (dateInput) {
         dateInput.valueAsDate = new Date();
+        
+        // 關鍵：監聽日期變動，一旦選完日期「立刻」執行一次，不用等 5 秒
+        dateInput.addEventListener('change', () => {
+            console.log("偵測到日期變更，立即更新...");
+            syncVehicleStatus();
+        });
     }
     
-    // 定義一個要重複執行的動作
     const refreshData = () => {
-        console.log("系統自動同步中...");
-        syncVehicleStatus(); // 呼叫你原本寫好的抓資料函式
+        syncVehicleStatus();
     };
 
-    // 2. 立刻執行第一次同步
-    refreshData();
-
-    // 3. 設定定時器：每 3000 毫秒 (3 秒  自動執行一次
-    // 使用者不用重新整理網頁，也會看到車組消失
-    setInterval(refreshData, 10000); 
+    refreshData(); // 初始載入
+    setInterval(refreshData, 5000); // 後續自動同步
 };
 </script>
 
 </body>
 
 </html>
+
 
 
 
